@@ -1,0 +1,1 @@
+Habit Logger is a simple console application designed to help users track and manage their habits. It allows users to add, update, view, and delete habit records in a SQLite database; mostly a simple project for me to practice/use basic CRUD operations with SQLite
