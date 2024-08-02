@@ -3,7 +3,16 @@ namespace HabitLogger
 {
     internal class Menu
     {
-        bool ProgramOn = true;
+        private bool ProgramOn = true;
+        private HabitDbHelper dbHelper;
+
+        
+        // establish connection with database
+
+        public Menu(HabitDbHelper dbHelper)
+        {
+            this.dbHelper = dbHelper;
+        }
         internal void ShowMenu()
         {
             while (ProgramOn)
@@ -17,49 +26,30 @@ namespace HabitLogger
                 "Type '4' To Update an Existing Record\n");
                 Console.WriteLine("--------------------");
                 var chosen_option = Console.ReadLine();
-                //int value;
-                //if (int.TryParse(chosen_option, value))
-                //{
-
-
-                // }    
+                   
                 switch (chosen_option)
                 {
                     case "0":
                         Console.WriteLine("Thanks for using the application!");
                         ProgramOn = false;
-                        Environment.Exit(0);
                         break;
                     case "1":
+                        Console.Clear();
                         Console.WriteLine("Checking your previous records...");
-                        // implement soon
+                        dbHelper.ViewAllHabits();
                         break;
                     case "2":
-                        Console.WriteLine("Creating a new record!");
-                        Console.WriteLine("What Habit Would you like to add? Please enter here: \n");
-                        string habitName = Console.ReadLine();
-
-                        Console.WriteLine("Thanks! How many times of this habit did you complete today? Please enter a numerical number \n");
-                        var result = Console.ReadLine();
-                        int quantity;
-                        while (!int.TryParse(result, out quantity) || quantity < 0)
-                        {
-                            Console.WriteLine("Please enter a valid positive number!");
-                            Console.WriteLine("How many times of this habit did you complete today? Please enter a numerical number \n");
-                            result = Console.ReadLine();
-                        }
-                        var date = DateTime.UtcNow;
-                        Console.WriteLine("Thank you! The habit has been added to your record!");
-                        var NewHabit = new Habit(habitName, date, quantity);
-                        NewHabit.ShowHabitDetails();
+                        dbHelper.InsertToTable();
+                        // call insert method from HabitDbHelper.cs
                         break;
-
                     case "3":
-                        Console.WriteLine("Deleting a habit! Please enter the name of the habit you would like to remove.");
+                        Console.WriteLine("Deleting a habit! Please enter the id of the habit you would like to remove.");
+                        dbHelper.DeleteHabit();
+                       
                         break;
 
                     case "4":
-                        Console.WriteLine("Updating a habit! Please enter the name of the habit you would like to update!");
+                        dbHelper.UpdateHabit();
                         break;
                 }
 
